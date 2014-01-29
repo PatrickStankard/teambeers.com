@@ -10,12 +10,6 @@
     $(function() {
       self.$answer = $('#teambeers-answer');
 
-      self.calculateAndUpdateAnswer();
-
-      self.calculateAndUpdateAnswerInterval = setInterval(function() {
-        self.calculateAndUpdateAnswer();
-      }, 1000);
-
       switch (self.hash) {
         case '#!/emergency':
           self.manualOverride({
@@ -23,6 +17,12 @@
           });
 
           break;
+        default:
+          self.calculateAndUpdateAnswer();
+
+          self.calculateAndUpdateAnswerInterval = setInterval(function() {
+            self.calculateAndUpdateAnswer();
+          }, 1000);
       }
     });
   };
