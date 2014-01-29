@@ -5,6 +5,7 @@
     var self = this;
 
     self.answer = false;
+    self.hash = w.location.hash.toLowerCase();
 
     $(function() {
       self.$answer = $('#teambeers-answer');
@@ -14,6 +15,15 @@
       self.calculateAndUpdateAnswerInterval = setInterval(function() {
         self.calculateAndUpdateAnswer();
       }, 1000);
+
+      switch (self.hash) {
+        case '#!/emergency':
+          self.manualOverride({
+            answer: true
+          });
+
+          break;
+      }
     });
   };
 
