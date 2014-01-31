@@ -9,6 +9,18 @@
 
     $(function() {
       self.$answer = $('#teambeers-answer');
+      self.$celebrationRow = $('#teambeers-celebration-row');
+      self.$celebrationMp3 = $('#teambeers-celebration-mp3');
+      self.$celebrationPlay = $('#teambeers-celebration-play');
+      self.$celebrationPause = $('#teambeers-celebration-pause');
+
+      self.$celebrationPlay.on('click', function() {
+        self.$celebrationMp3[0].play();
+      });
+
+      self.$celebrationPause.on('click', function() {
+        self.$celebrationMp3[0].pause();
+      });
 
       switch (self.hash) {
         case '#!/emergency':
@@ -61,6 +73,14 @@
 
     if (text.current !== text.latest) {
       this.$answer.text(text.latest);
+
+      if (this.answer === true) {
+        this.$celebrationRow.removeClass('invisible');
+        this.$celebrationMp3[0].play();
+      } else {
+        this.$celebrationRow.addClass('invisible');
+        this.$celebrationMp3[0].pause();
+      }
     }
   };
 
