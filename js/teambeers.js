@@ -58,7 +58,7 @@
 
     day.pass = day.value === 5;
     hours.pass = hours.value >= 21;
-    minutes.pass = minutes.value >= 40 && hours.pass === true || hours.value >= 22;
+    minutes.pass = (minutes.value >= 40 && hours.pass === true) || hours.value >= 22;
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
       this.answer = true;
