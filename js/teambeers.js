@@ -144,5 +144,3 @@ var TeamBeers;
     }
   };
 })(jQuery, window, document);
-
-window.teamBeers = new TeamBeers();
