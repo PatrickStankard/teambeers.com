@@ -1,4 +1,85 @@
-#teambeers-answer {
+strong#teambeers-answer-text {
   font-size: 25em;
   font-size: 25vw;
+}
+
+button#teambeers-celebration-toggle {
+  outline: 0;
+}
+
+p#teambeers-answer-wrapper.animated {
+  -moz-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+
+p#teambeers-answer-wrapper.animated > strong#teambeers-answer-text {
+  -moz-animation: usa 1s infinite steps(1);
+  -o-animation: usa 1s infinite steps(1);
+  -webkit-animation: usa 1s infinite steps(1);
+  animation: usa 1s infinite steps(1);
+
+  -moz-text-shadow: 1.5px 0 0 #000, -1.5px 0 0 #000, 0 1.5px 0 #000, 0 -1.5px 0 #000, 0.5px 0.5px #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000;
+  -o-text-shadow: 1.5px 0 0 #000, -1.5px 0 0 #000, 0 1.5px 0 #000, 0 -1.5px 0 #000, 0.5px 0.5px #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000;
+  -webkit-text-shadow: 1.5px 0 0 #000, -1.5px 0 0 #000, 0 1.5px 0 #000, 0 -1.5px 0 #000, 0.5px 0.5px #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000;
+  text-shadow: 1.5px 0 0 #000, -1.5px 0 0 #000, 0 1.5px 0 #000, 0 -1.5px 0 #000, 0.5px 0.5px #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000;
+}
+
+@-moz-keyframes usa {
+  0%, 99% {
+    color: red;
+  }
+
+  33% {
+    color: #fff;
+  }
+
+  66% {
+    color: blue;
+  }
+}
+
+@-o-keyframes usa {
+  0%, 99% {
+    color: red;
+  }
+
+  33% {
+    color: #fff;
+  }
+
+  66% {
+    color: blue;
+  }
+}
+
+@-webkit-keyframes usa {
+  0%, 99% {
+    color: red;
+  }
+
+  33% {
+    color: #fff;
+  }
+
+  66% {
+    color: blue;
+  }
+}
+
+@keyframes usa {
+  0%, 99% {
+    color: red;
+  }
+
+  33% {
+    color: #fff;
+
+  }
+
+  66% {
+    color: blue;
+  }
 }
