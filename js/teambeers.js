@@ -1,25 +1,24 @@
-(function(w) {
+var TeamBeers;
+
+(function($, window, document, undefined) {
   'use strict';
 
-  var TeamBeers = function() {
+  TeamBeers = function() {
     var self = this;
 
     self.answer = false;
-    self.hash = w.location.hash.toLowerCase();
+    self.hash = window.location.hash.toLowerCase();
 
     $(function() {
-      self.$answer = $('#teambeers-answer');
-      self.$celebrationRow = $('#teambeers-celebration-row');
-      self.$celebrationMp3 = $('#teambeers-celebration-mp3');
-      self.$celebrationPlay = $('#teambeers-celebration-play');
-      self.$celebrationPause = $('#teambeers-celebration-pause');
+      self.$answerWrapper = $('p#teambeers-answer-wrapper');
+      self.$answerText = $('strong#teambeers-answer-text');
+      self.$celebrationRow = $('div#teambeers-celebration-row');
+      self.$celebrationMp3 = $('audio#teambeers-celebration-mp3');
+      self.$celebrationToggle = $('button#teambeers-celebration-toggle');
+      self.$celebrationToggleIcon = $('span#teambeers-celebration-toggle-icon');
 
-      self.$celebrationPlay.on('click', function() {
-        self.$celebrationMp3[0].play();
-      });
-
-      self.$celebrationPause.on('click', function() {
-        self.$celebrationMp3[0].pause();
+      self.$celebrationToggle.on('click', function() {
+        self.toggleCelebration();
       });
 
       switch (self.hash) {
@@ -37,6 +36,45 @@
           }, 1000);
       }
     });
+  };
+
+  TeamBeers.prototype.startAnswerAnimation = function() {
+    this.$answerWrapper.addClass('animated pulse');
+  };
+
+  TeamBeers.prototype.stopAnswerAnimation = function() {
+    this.$answerWrapper.removeClass('animated pulse');
+  };
+
+  TeamBeers.prototype.showCelebrationToggle = function() {
+    this.$celebrationRow.removeClass('invisible');
+  };
+
+  TeamBeers.prototype.hideCelebrationToggle = function() {
+    this.$celebrationRow.addClass('invisible');
+  };
+
+  TeamBeers.prototype.startCelebration = function() {
+    this.$celebrationToggleIcon.removeClass('glyphicon-play')
+                               .addClass('glyphicon-stop');
+
+    this.$celebrationMp3[0].play();
+  };
+
+  TeamBeers.prototype.stopCelebration = function() {
+    this.$celebrationToggleIcon.removeClass('glyphicon-stop')
+                               .addClass('glyphicon-play');
+
+    this.$celebrationMp3[0].pause();
+    this.$celebrationMp3[0].currentTime = 0;
+  };
+
+  TeamBeers.prototype.toggleCelebration = function() {
+    if (this.$celebrationToggleIcon.hasClass('glyphicon-stop')) {
+      this.stopCelebration();
+    } else if (this.$celebrationToggleIcon.hasClass('glyphicon-play')) {
+      this.startCelebration();
+    }
   };
 
   TeamBeers.prototype.calculateAnswer = function() {
@@ -62,24 +100,28 @@
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
       this.answer = true;
+    } else {
+      this.answer = false;
     }
   };
 
   TeamBeers.prototype.updateAnswer = function() {
     var text = {
-      current: this.$answer.text(),
+      current: this.$answerText.text(),
       latest: this.answer === true ? 'YES' : 'NO'
     };
 
     if (text.current !== text.latest) {
-      this.$answer.text(text.latest);
+      this.$answerText.text(text.latest);
 
       if (this.answer === true) {
-        this.$celebrationRow.removeClass('invisible');
-        this.$celebrationMp3[0].play();
+        this.startAnswerAnimation();
+        this.showCelebrationToggle();
+        this.startCelebration();
       } else {
-        this.$celebrationRow.addClass('invisible');
-        this.$celebrationMp3[0].pause();
+        this.stopAnswerAnimation();
+        this.hideCelebrationToggle();
+        this.stopCelebration();
       }
     }
   };
@@ -101,7 +143,6 @@
       }
     }
   };
+})(jQuery, window, document);
 
-  w.teamBeers = new TeamBeers();
-
-})(window);
+window.teamBeers = new TeamBeers();
