@@ -68,7 +68,7 @@ var TeamBeers;
       if (self.$celebrationMp3[0].currentTime === 0) {
         self.stopCelebration();
       }
-    }, 250);
+    }, 500);
   };
 
   TeamBeers.prototype.stopCelebration = function() {
