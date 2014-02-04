@@ -55,10 +55,19 @@ var TeamBeers;
   };
 
   TeamBeers.prototype.startCelebration = function() {
-    this.$celebrationToggleIcon.removeClass('glyphicon-play')
+    var self = this;
+
+    self.$celebrationToggleIcon.removeClass('glyphicon-play')
                                .addClass('glyphicon-stop');
 
-    this.$celebrationMp3[0].play();
+    self.$celebrationMp3[0].play();
+
+
+    setInterval(function() {
+      if (self.$celebrationMp3[0].currentTime === 0) {
+        self.stopCelebration();
+      }
+    }, 500);
   };
 
   TeamBeers.prototype.stopCelebration = function() {
@@ -66,7 +75,10 @@ var TeamBeers;
                                .addClass('glyphicon-play');
 
     this.$celebrationMp3[0].pause();
-    this.$celebrationMp3[0].currentTime = 0;
+
+    if (this.$celebrationMp3[0].currentTime !== 0) {
+      this.$celebrationMp3[0].currentTime = 0;
+    }
   };
 
   TeamBeers.prototype.toggleCelebration = function() {
