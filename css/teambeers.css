@@ -5,6 +5,10 @@ img#fork-me {
   border: 0;
   width: 149px;
   height: 149px;
+  width: 14.9vmax;
+  height: 14.9vmax;
+  max-width: 149px;
+  max-height: 149px;
 }
 
 strong#teambeers-answer-text {
