@@ -21,6 +21,8 @@ var TeamBeers;
         self.toggleCelebration();
       });
 
+      self.isCelebrationMp3PlayingTimeout = null;
+
       switch (self.hash) {
         case '#!/emergency':
           self.manualOverride({
@@ -62,15 +64,16 @@ var TeamBeers;
 
     self.$celebrationMp3[0].play();
 
-
-    setInterval(function() {
+    self.isCelebrationMp3PlayingTimeout = setTimeout(function() {
       if (self.$celebrationMp3[0].currentTime === 0) {
         self.stopCelebration();
       }
-    }, 500);
+    }, 250);
   };
 
   TeamBeers.prototype.stopCelebration = function() {
+    clearTimeout(this.isCelebrationMp3PlayingTimeout);
+
     this.$celebrationToggleIcon.removeClass('glyphicon-stop')
                                .addClass('glyphicon-play');
 
