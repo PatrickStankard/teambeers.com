@@ -16,12 +16,13 @@ var TeamBeers;
       self.$celebrationMp3 = $('audio#teambeers-celebration-mp3');
       self.$celebrationToggle = $('button#teambeers-celebration-toggle');
       self.$celebrationToggleIcon = $('span#teambeers-celebration-toggle-icon');
+      self.$spudsMp4 = $('video#teambeers-spuds-mp4');
 
       self.$celebrationToggle.on('click', function() {
-        self.toggleCelebration();
+        self.toggleCelebrationMp3();
       });
 
-      self.isCelebrationMp3PlayingTimeout = null;
+      self.mediaElementPlayingTimeout = {};
 
       switch (self.hash) {
         case '#!/emergency':
@@ -56,39 +57,105 @@ var TeamBeers;
     this.$celebrationRow.addClass('invisible');
   };
 
-  TeamBeers.prototype.startCelebration = function() {
-    var self = this;
-
-    self.$celebrationToggleIcon.removeClass('glyphicon-play')
-                               .addClass('glyphicon-stop');
-
-    self.$celebrationMp3[0].play();
-
-    self.isCelebrationMp3PlayingTimeout = setTimeout(function() {
-      if (self.$celebrationMp3[0].currentTime === 0) {
-        self.stopCelebration();
-      }
-    }, 500);
+  TeamBeers.prototype.showSpudsMp4 = function() {
+    this.$spudsMp4.removeClass('hidden');
   };
 
-  TeamBeers.prototype.stopCelebration = function() {
-    clearTimeout(this.isCelebrationMp3PlayingTimeout);
+  TeamBeers.prototype.hideSpudsMp4 = function() {
+    this.$spudsMp4.addClass('hidden');
+  };
 
-    this.$celebrationToggleIcon.removeClass('glyphicon-stop')
-                               .addClass('glyphicon-play');
+  TeamBeers.prototype.startMediaElement = function(params) {
+    var self, media;
 
-    this.$celebrationMp3[0].pause();
+    self = this;
 
-    if (this.$celebrationMp3[0].currentTime !== 0) {
-      this.$celebrationMp3[0].currentTime = 0;
+    media = {
+      id: null
+    };
+
+    if (typeof params === 'object') {
+      if (typeof params.id === 'string') {
+        media.id = params.id;
+      }
+    }
+
+    switch(media.id) {
+      case 'celebration':
+        media.element = self.$celebrationMp3[0];
+
+        self.$celebrationToggleIcon.removeClass('glyphicon-play')
+                                   .addClass('glyphicon-stop');
+        break;
+      case 'spuds':
+        media.element = self.$spudsMp4[0];
+
+        self.showSpudsMp4();
+        break;
+      default:
+        return false;
+    }
+
+    media.element.play();
+
+    (function(self, media, params) {
+      self.mediaElementPlayingTimeout[media.id] = setTimeout(function() {
+        if (media.element.currentTime === 0) {
+          self.stopMediaElement(params);
+        }
+      }, 500);
+    })(self, media, params);
+  };
+
+  TeamBeers.prototype.stopMediaElement = function(params) {
+    var self, media;
+
+    self = this;
+
+    media = {
+      id: null
+    };
+
+    if (typeof params === 'object') {
+      if (typeof params.id === 'string') {
+        media.id = params.id;
+      }
+    }
+
+    switch(media.id) {
+      case 'celebration':
+        media.element = self.$celebrationMp3[0];
+
+        self.$celebrationToggleIcon.removeClass('glyphicon-stop')
+                                   .addClass('glyphicon-play');
+        break;
+      case 'spuds':
+        media.element = self.$spudsMp4[0];
+
+        self.hideSpudsMp4();
+        break;
+      default:
+        return false;
+    }
+
+    clearTimeout(self.mediaElementPlayingTimeout[media.id]);
+
+    media.element.pause();
+
+    if (media.element.currentTime !== 0) {
+      media.element.currentTime = 0;
     }
   };
 
-  TeamBeers.prototype.toggleCelebration = function() {
+  TeamBeers.prototype.toggleCelebrationMp3 = function() {
     if (this.$celebrationToggleIcon.hasClass('glyphicon-stop')) {
-      this.stopCelebration();
+      this.stopMediaElement({
+        id: 'celebration'
+      });
     } else if (this.$celebrationToggleIcon.hasClass('glyphicon-play')) {
-      this.startCelebration();
+      this.startMediaElement({
+        id: 'celebration'
+      });
     }
   };
 
@@ -132,11 +199,25 @@ var TeamBeers;
       if (this.answer === true) {
         this.startAnswerAnimation();
         this.showCelebrationToggle();
-        this.startCelebration();
+
+        this.startMediaElement({
+          id: 'celebration'
+        });
+
+        this.startMediaElement({
+          id: 'spuds'
+        });
       } else {
         this.stopAnswerAnimation();
         this.hideCelebrationToggle();
-        this.stopCelebration();
+
+        this.stopMediaElement({
+          id: 'celebration'
+        });
+
+        this.stopMediaElement({
+          id: 'spuds'
+        });
       }
     }
   };
