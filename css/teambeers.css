@@ -27,7 +27,6 @@ p#teambeers-answer-wrapper.animated {
   animation-iteration-count: infinite;
 }
 
-
 p#teambeers-answer-wrapper.animated > strong#teambeers-answer-text {
   -moz-animation: usa 1s infinite steps(1);
   -o-animation: usa 1s infinite steps(1);
@@ -95,4 +94,18 @@ p#teambeers-answer-wrapper.animated > strong#teambeers-answer-text {
   66% {
     color: blue;
   }
+}
+
+video#teambeers-spuds-mp4 {
+  zoom: 1;
+  filter: alpha(opacity=45);
+  opacity: 0.45;
+  z-index: -100;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
 }
