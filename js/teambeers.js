@@ -176,8 +176,6 @@ var TeamBeers;
   TeamBeers.prototype.calculateAnswer = function() {
     var now, day, hours, minutes;
 
-    now = new Date();
-
     day = {
       value: now.getUTCDay()
     };
@@ -190,9 +188,15 @@ var TeamBeers;
       value: now.getUTCMinutes()
     };
 
+    // friday
     day.pass = day.value === 5;
+    // greater than or equal to 4:40pm, up until 7:00pm
     hours.pass = hours.value >= 21;
-    minutes.pass = (minutes.value >= 40 && hours.pass === true) || hours.value >= 22;
+    minutes.pass = minutes.value >= 40 && hours.pass === true;
+
+    if (minutes.pass === false) {
+      minutes.pass = hours.value >= 22;
+    }
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
       this.answer = true;
