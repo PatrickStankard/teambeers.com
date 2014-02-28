@@ -98,8 +98,8 @@ p#teambeers-answer-wrapper.animated > strong#teambeers-answer-text {
 
 video#teambeers-spuds-mp4 {
   zoom: 1;
-  filter: alpha(opacity=35);
-  opacity: 0.35;
+  filter: alpha(opacity=30);
+  opacity: 0.30;
   z-index: -100;
   position: fixed;
   right: 0;
