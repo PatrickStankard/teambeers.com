@@ -28,13 +28,18 @@
           </div>
         </div>
       </div>
-      <div id="teambeers-celebration-row" class="row invisible">
+      <div id="teambeers-toggle-row" class="row invisible">
         <div class="col-md-12">
           <div class="center-block">
             <p class="text-center">
               <button type="button" id="teambeers-celebration-toggle" class="btn btn-default invisible">
                 <span id="teambeers-celebration-toggle-icon" class="glyphicon glyphicon-play">
-                  <!-- -->
+                  <!---->
+                </span>
+              </button>
+              <button type="button" id="teambeers-horn-toggle" class="btn btn-default invisible">
+                <span id="teambeers-horn-toggle-icon" class="glyphicon glyphicon-bullhorn">
+                  <!---->
                 </span>
               </button>
             </p>
@@ -44,6 +49,7 @@
     </div>
     <a href="https://github.com/PatrickStankard/teambeers.com"><img id="fork-me" src="img/fork-me.png" alt="Fork me on GitHub"></a>
     <audio id="teambeers-celebration-mp3" src="mp3/celebration.mp3" loop></audio>
+    <audio id="teambeers-horn-mp3" src="mp3/horn.mp3"></audio>
     <video id="teambeers-spuds-mp4" class="hidden" src="mp4/spuds.mp4" loop muted></video>
     <!-- jQuery -->
     <script src="js/jquery-2.1.0.min.js"></script>
