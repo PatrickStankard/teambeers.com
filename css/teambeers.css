@@ -16,7 +16,7 @@ strong#teambeers-answer-text {
   font-size: 25vw;
 }
 
-button#teambeers-celebration-toggle {
+button#teambeers-celebration-toggle, button#teambeers-horn-toggle {
   outline: 0;
 }
 
