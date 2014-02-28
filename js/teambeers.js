@@ -176,6 +176,8 @@ var TeamBeers;
   TeamBeers.prototype.calculateAnswer = function() {
     var now, day, hours, minutes;
 
+    now = new Date();
+
     day = {
       value: now.getUTCDay()
     };
