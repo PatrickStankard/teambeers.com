@@ -12,14 +12,20 @@ var TeamBeers;
     $(function() {
       self.$answerWrapper = $('p#teambeers-answer-wrapper');
       self.$answerText = $('strong#teambeers-answer-text');
-      self.$celebrationRow = $('div#teambeers-celebration-row');
+      self.$toggleRow = $('div#teambeers-toggle-row');
       self.$celebrationMp3 = $('audio#teambeers-celebration-mp3');
       self.$celebrationToggle = $('button#teambeers-celebration-toggle');
       self.$celebrationToggleIcon = $('span#teambeers-celebration-toggle-icon');
+      self.$hornMp3 = $('audio#teambeers-horn-mp3');
+      self.$hornToggle = $('button#teambeers-horn-toggle');
       self.$spudsMp4 = $('video#teambeers-spuds-mp4');
 
       self.$celebrationToggle.on('click', function() {
         self.toggleCelebrationMp3();
+      });
+
+      self.$hornToggle.on('click', function() {
+        self.toggleHornMp3();
       });
 
       switch (self.hash) {
@@ -47,12 +53,28 @@ var TeamBeers;
     this.$answerWrapper.removeClass('animated pulse');
   };
 
+  TeamBeers.prototype.showToggleRow = function() {
+    this.$toggleRow.removeClass('invisible');
+  };
+
+  TeamBeers.prototype.hideToggleRow = function() {
+    this.$toggleRow.addClass('invisible');
+  };
+
   TeamBeers.prototype.showCelebrationToggle = function() {
-    this.$celebrationRow.removeClass('invisible');
+    this.$celebrationToggle.removeClass('invisible');
   };
 
   TeamBeers.prototype.hideCelebrationToggle = function() {
-    this.$celebrationRow.addClass('invisible');
+    this.$celebrationToggle.addClass('invisible');
+  };
+
+  TeamBeers.prototype.showHornToggle = function() {
+    this.$hornToggle.removeClass('invisible');
+  };
+
+  TeamBeers.prototype.hideHornToggle = function() {
+    this.$hornToggle.addClass('invisible');
   };
 
   TeamBeers.prototype.showSpudsMp4 = function() {
@@ -88,7 +110,7 @@ var TeamBeers;
         };
 
         media.complete = function() {
-          self.$celebrationToggle.removeClass('invisible');
+          self.showCelebrationToggle();
         };
 
         break;
@@ -100,11 +122,23 @@ var TeamBeers;
         };
 
         break;
+      case 'horn':
+        media.$ = self.$hornMp3;
+
+        media.complete = function() {
+          self.showHornToggle();
+        };
+
+        break;
       default:
         return false;
     }
 
     media.element = media.$[0];
+
+    if (media.id === 'horn') {
+      media.element.volume = 0.5;
+    }
 
     media.$.one('canplay canplaythrough', function() {
       media.element.play();
@@ -148,6 +182,9 @@ var TeamBeers;
 
         self.hideSpudsMp4();
         break;
+      case 'horn':
+        media.$ = self.$hornMp3;
+        break;
       default:
         return false;
     }
@@ -171,6 +208,16 @@ var TeamBeers;
         id: 'celebration'
       });
     }
+  };
+
+  TeamBeers.prototype.toggleHornMp3 = function() {
+    this.stopMediaElement({
+      id: 'horn'
+    });
+
+    this.startMediaElement({
+      id: 'horn'
+    });
   };
 
   TeamBeers.prototype.calculateAnswer = function() {
@@ -218,10 +265,14 @@ var TeamBeers;
 
       if (this.answer === true) {
         this.startAnswerAnimation();
-        this.showCelebrationToggle();
+        this.showToggleRow();
 
         this.startMediaElement({
           id: 'celebration'
+        });
+
+        this.startMediaElement({
+          id: 'horn'
         });
 
         this.startMediaElement({
@@ -229,10 +280,14 @@ var TeamBeers;
         });
       } else {
         this.stopAnswerAnimation();
-        this.hideCelebrationToggle();
+        this.hideToggleRow();
 
         this.stopMediaElement({
           id: 'celebration'
+        });
+
+        this.stopMediaElement({
+          id: 'horn'
         });
 
         this.stopMediaElement({
