@@ -22,8 +22,6 @@ var TeamBeers;
         self.toggleCelebrationMp3();
       });
 
-      self.mediaElementPlayingTimeout = {};
-
       switch (self.hash) {
         case '#!/emergency':
           self.manualOverride({
@@ -82,29 +80,45 @@ var TeamBeers;
 
     switch(media.id) {
       case 'celebration':
-        media.element = self.$celebrationMp3[0];
+        media.$ = self.$celebrationMp3;
 
-        self.$celebrationToggleIcon.removeClass('glyphicon-play')
-                                   .addClass('glyphicon-stop');
+        media.success = function() {
+          self.$celebrationToggleIcon.removeClass('glyphicon-play')
+                                     .addClass('glyphicon-stop');
+        };
+
+        media.complete = function() {
+          self.$celebrationToggle.removeClass('invisible');
+        };
+
         break;
       case 'spuds':
-        media.element = self.$spudsMp4[0];
+        media.$ = self.$spudsMp4;
 
-        self.showSpudsMp4();
+        media.success = function() {
+          self.showSpudsMp4();
+        };
+
         break;
       default:
         return false;
     }
 
-    media.element.play();
+    media.element = media.$[0];
 
-    (function(self, media, params) {
-      self.mediaElementPlayingTimeout[media.id] = setTimeout(function() {
-        if (media.element.currentTime === 0) {
-          self.stopMediaElement(params);
-        }
-      }, 500);
-    })(self, media, params);
+    media.$.one('canplay canplaythrough', function() {
+      media.element.play();
+
+      if (typeof media.success === 'function') {
+        media.success();
+      }
+    });
+
+    media.element.load();
+
+    if (typeof media.complete === 'function') {
+      media.complete();
+    }
   };
 
   TeamBeers.prototype.stopMediaElement = function(params) {
@@ -124,13 +138,13 @@ var TeamBeers;
 
     switch(media.id) {
       case 'celebration':
-        media.element = self.$celebrationMp3[0];
+        media.$ = self.$celebrationMp3;
 
         self.$celebrationToggleIcon.removeClass('glyphicon-stop')
                                    .addClass('glyphicon-play');
         break;
       case 'spuds':
-        media.element = self.$spudsMp4[0];
+        media.$ = self.$spudsMp4;
 
         self.hideSpudsMp4();
         break;
@@ -138,7 +152,7 @@ var TeamBeers;
         return false;
     }
 
-    clearTimeout(self.mediaElementPlayingTimeout[media.id]);
+    media.element = media.$[0];
 
     media.element.pause();
 
