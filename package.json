@@ -1,0 +1,16 @@
+{
+  "name": "teambeers.com",
+  "version": "0.0.1",
+  "description": "A tool to quickly and easily determine whether or not it is time for #TeamBeers.",
+  "private": true,
+  "devDependencies": {
+    "grunt": "^0.4.2",
+    "grunt-contrib-jshint": "^0.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PatrickStankard/teambeers.com.git"
+  },
+  "author": "Patrick Stankard <me@patrickstankard.com>",
+  "license": "MIT"
+}
