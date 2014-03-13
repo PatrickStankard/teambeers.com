@@ -3,4 +3,4 @@
 
 A tool to quickly and easily determine whether or not it is time for #TeamBeers.
 
-Demo: [http://teambeers.com]
+Demo: http://teambeers.com
