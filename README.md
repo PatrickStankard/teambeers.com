@@ -2,3 +2,10 @@
 =============
 
 A tool to quickly and easily determine whether or not it is time for #TeamBeers.
+
+## FAQ
+#### When is #TeamBeers?
+Currently, #TeamBeers is every Friday from 4:40PM EST to 7:00PM EST.
+
+#### What if it's time for #TeamBeers, but it's not Friday and/or in-between 4:40PM EST and 7:00PM EST?
+There is an emergency method, which you can access at [teambeers.com/#/emergency](http://teambeers.com/#/emergency). Use at your own discretion.
