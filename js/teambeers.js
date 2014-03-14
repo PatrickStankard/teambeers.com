@@ -240,12 +240,14 @@ var TeamBeers;
     // friday
     day.pass = day.value === 5;
     // greater than or equal to 4:40pm, up until 7:00pm
-    hours.pass = hours.value >= 21;
+    hours.pass = hours.value >= 20;
     minutes.pass = minutes.value >= 40 && hours.pass === true;
 
     if (minutes.pass === false) {
       minutes.pass = hours.value >= 22;
     }
+
+    console.log(day, hours, minutes);
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
       this.answer = true;
