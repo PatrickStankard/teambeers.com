@@ -137,7 +137,7 @@ var TeamBeers;
     media.element = media.$[0];
 
     if (media.id === 'horn') {
-      media.element.volume = 0.5;
+      media.element.volume = 0.3;
     }
 
     media.$.one('canplay canplaythrough', function() {
