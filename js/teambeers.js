@@ -244,10 +244,8 @@ var TeamBeers;
     minutes.pass = minutes.value >= 40 && hours.pass === true;
 
     if (minutes.pass === false) {
-      minutes.pass = hours.value >= 22;
+      minutes.pass = hours.value >= 21;
     }
-
-    console.log(day, hours, minutes);
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
       this.answer = true;
