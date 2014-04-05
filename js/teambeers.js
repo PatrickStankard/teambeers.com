@@ -3,7 +3,7 @@
 
   window.TeamBeers = function() {
     this.answer = false;
-    this.hash = window.location.hash.toLowerCase();
+    this.hash = '';
 
     $(function() {
       this.$answer = {
@@ -117,32 +117,47 @@
       };
 
       this.setEventListeners();
-
-      switch (this.hash) {
-        case '#!/emergency':
-          this.manualOverride({
-            answer: true
-          });
-
-          break;
-        default:
-          this.determineAnswer();
-
-          this.determineAnswerInterval = setInterval(function() {
-            this.determineAnswer();
-          }.bind(this), 1000);
-      }
+      this.checkHash();
     }.bind(this));
   };
 
   window.TeamBeers.prototype.setEventListeners = function() {
-    this.$toggle.celebration.button.on('click', function() {
-      this.$mp3.celebration.toggle();
-    }.bind(this));
+    $(window).on(
+      'hashchange',
+      this.checkHash.bind(this)
+    );
 
-    this.$toggle.horn.button.on('click', function() {
-      this.$mp3.horn.toggle();
-    }.bind(this));
+    this.$toggle.celebration.button.on(
+      'click',
+      this.$mp3.celebration.toggle.bind(this)
+    );
+
+    this.$toggle.horn.button.on(
+      'click',
+      this.$mp3.horn.toggle.bind(this)
+    );
+  };
+
+  window.TeamBeers.prototype.checkHash = function() {
+    this.hash = window.location.hash.toLowerCase();
+
+    switch (this.hash) {
+      case '#!/emergency':
+        this.manualOverride({
+          answer: true
+        });
+
+        break;
+      default:
+        this.determineAnswer();
+
+        clearInterval(this.determineAnswerInterval);
+
+        this.determineAnswerInterval = setInterval(
+          this.determineAnswer.bind(this),
+          1000
+        );
+    }
   };
 
   window.TeamBeers.prototype.startMediaElement = function(params) {
@@ -159,30 +174,18 @@
     switch (media.id) {
       case 'celebration':
         media.element = this.$mp3.celebration.audio;
-
-        media.success = function() {
-          this.$toggle.celebration.play();
-        }.bind(this);
-
-        media.complete = function() {
-          this.$toggle.celebration.show();
-        }.bind(this);
+        media.success = this.$toggle.celebration.play;
+        media.complete = this.$toggle.celebration.show;
 
         break;
       case 'horn':
         media.element = this.$mp3.horn.audio;
-
-        media.complete = function() {
-          this.$toggle.horn.show();
-        }.bind(this);
+        media.complete = this.$toggle.horn.show;
 
         break;
       case 'spuds':
         media.element = this.$mp4.spuds.video;
-
-        media.success = function() {
-          this.$mp4.spuds.show();
-        }.bind(this);
+        media.success = this.$mp4.spuds.show;
 
         break;
       default:
@@ -257,25 +260,34 @@
     now = new Date();
 
     day = {
-      value: now.getUTCDay()
+      value: now.getUTCDay(),
+      pass: false
     };
 
     hours = {
-      value: now.getUTCHours()
+      value: now.getUTCHours(),
+      pass: false
     };
 
     minutes = {
-      value: now.getUTCMinutes()
+      value: now.getUTCMinutes(),
+      pass: false
     };
 
-    // friday
-    day.pass = day.value === 5;
-    // greater than or equal to 4:40pm, up until 7:00pm
-    hours.pass = hours.value >= 20;
-    minutes.pass = minutes.value >= 40 && hours.pass === true;
+    day.pass = day.value === 5 ||
+               day.value === 6;
 
-    if (minutes.pass === false) {
-      minutes.pass = hours.value >= 21;
+    switch (day.value) {
+      case 5:
+        hours.pass = hours.value >= 20;
+        minutes.pass = minutes.value >= 40 && hours.pass === true;
+
+        if (minutes.pass === false) {
+          minutes.pass = hours.value >= 21;
+        }
+      case 6:
+        hours.pass = hours.value <= 3;
+        minutes.pass = hours.pass === true;
     }
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
