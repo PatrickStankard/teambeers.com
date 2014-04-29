@@ -285,9 +285,13 @@
         if (minutes.pass === false) {
           minutes.pass = hours.value >= 21;
         }
+
+        break;
       case 6:
         hours.pass = hours.value <= 3;
         minutes.pass = hours.pass === true;
+
+        break;
     }
 
     if (day.pass === true && hours.pass === true && minutes.pass === true) {
