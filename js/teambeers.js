@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 (function($, window, document, undefined) {
   'use strict';
 
@@ -199,10 +201,14 @@
     }
 
     $(media.element).one('canplay canplaythrough', function() {
-      media.element.play();
+      var promise = media.element.play();
 
       if (typeof media.success === 'function') {
-        media.success();
+        if (promise !== undefined) {
+          promise.then(() => {
+            media.success();
+          });
+        }
       }
     });
 
@@ -228,8 +234,6 @@
       case 'celebration':
         media.element = this.$mp3.celebration.audio;
 
-        this.$toggle.celebration.stop();
-
         break;
       case 'horn':
         media.element = this.$mp3.horn.audio;
@@ -237,8 +241,6 @@
         break;
       case 'spuds':
         media.element = this.$mp4.spuds.video;
-
-        this.$mp4.spuds.hide();
 
         break;
       default:
@@ -251,6 +253,19 @@
 
     if (media.element.currentTime !== 0) {
       media.element.currentTime = 0;
+    }
+
+    switch (media.id) {
+      case 'celebration':
+        this.$toggle.celebration.stop();
+
+        break;
+      case 'spuds':
+        this.$mp4.spuds.hide();
+
+        break;
+      default:
+        return false;
     }
   };
 
